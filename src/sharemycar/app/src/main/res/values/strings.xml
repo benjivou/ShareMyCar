@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ShareMyCar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="s_inscrire">S\'inscrire</string>
+    <string name="Connexion">Connexion</string>
+    <string name="entrez_votre_login">Entrez votre Login</string>
+    <string name="entrez_votre_mot_de_passe">Entrez votre mot de passe</string>
+</resources>
