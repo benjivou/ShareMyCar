@@ -19,10 +19,21 @@ router.get('/token/:username/:pwd', async (req, res) => {
         await res.json({message: "The username or the password is incorrect."})
     }
 });
-router.post('/new', async (req, res) => {
+router.post('/new', (req, res) => {
     try {
         const user = rest_operator.post(req.body);
         res.status(201).json(user)
+    } catch(err) {
+        res.status(500).json(e);
+    }
+})
+router.post('/login', (req, res) => {
+    try {
+        const data = req.body;
+        const user = rest_operator.get()
+                        .find(u => u.username === data.username && u.password === data.password);
+        if(user) res.status(200).json(user);
+        else res.status(404).json({err: "Unknown user"})
     } catch(err) {
         res.status(500).json(e);
     }
