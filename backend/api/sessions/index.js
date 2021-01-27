@@ -2,11 +2,13 @@ const {Router} = require('express');
 const RestOperator = require('../../utils/rest-operation');
 const sessions = require('./sessions.json');
 const bodyParser = require('body-parser');
+const MqttCommunicator = require('../../utils/mqtt-communicator');
 
 
 const router = new Router();
 //Setup the RestOperation module
-rest_operator = new RestOperator('sessions', 'sessions/sessions.json');
+const rest_operator = new RestOperator('sessions', 'sessions/sessions.json');
+const communicator = new MqttCommunicator();
 
 //Creation of the routes
 router.get('/', (req, res) => {
@@ -27,6 +29,7 @@ router.get('/:sessionId', (req, res) => {
 router.post('/', (req, res) => {
     try {
         const s = rest_operator.post(req.body);
+        communicator.publishRequest(s);
         res.status(201).json(s);
     } catch(e) {
         res.status(500).json(e);
