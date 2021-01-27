@@ -1,14 +1,21 @@
 package com.example.sharemycar.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.example.sharemycar.R
+import com.example.sharemycar.data.models.User
 import com.example.sharemycar.databinding.FragmentRegistrationBinding
 import kotlinx.android.synthetic.main.fragment_login.*
+import org.json.JSONObject
 
 
 /**
@@ -16,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
  * Use the [RegistrationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+private const val TAG = "RegistrationFragment"
 class RegistrationFragment : Fragment() {
 
 
@@ -37,6 +45,7 @@ class RegistrationFragment : Fragment() {
                 findNavController().navigate(R.id.loginFragment)
             }
             registrationProcessBtn.setOnClickListener {
+                Log.d(TAG, "onViewCreated: ")
                 registrationProcess()
             }
         }
@@ -45,10 +54,29 @@ class RegistrationFragment : Fragment() {
 
     fun registrationProcess(){
         // TODO
+        AndroidNetworking
+            .post("http://${getString(R.string.NODE_IP_ADDRESS)}:8080/api/users/new")
+            .addBodyParameter("username", binding.loginInputTxt.text.toString())
+            .addBodyParameter("password", binding.passwordInputTxt.text.toString())
+            .build()
+            .getAsJSONObject(object : JSONObjectRequestListener {
+                override fun onResponse(response: JSONObject?) {
+                    Log.d(TAG, "onResponse: messsag recu ${response.toString()}")
+                    findNavController().navigate(R.id.loginFragment)
+                }
 
-        if (true){
-            findNavController().navigate(R.id.loginFragment)
-        }
+                override fun onError(anError: ANError?) {
+                    Log.d(TAG, "onError: message")
+                    Toast.makeText(
+                        requireContext(),
+                        anError.toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    Log.e(TAG, "onError: ", anError)
+                }
+
+            })
+        
     }
 
 }

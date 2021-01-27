@@ -12,7 +12,7 @@ const jsonParser = bodyParser.json()
 app.use(jsonParser)
 app.use('/api', api)
 
-const hostname = "localhost"
+const hostname = "192.168.1.70"
 const port = 8080
 
 // Activation du server
