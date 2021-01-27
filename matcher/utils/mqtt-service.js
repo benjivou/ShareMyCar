@@ -23,10 +23,11 @@ class MqttService {
             }
 
             this.matcher.runMatching().then(matches => {
+                console.log('HERE', matches)
                 matches.forEach(match => {
                     this.notifyMatch(match);
                 })
-            })
+            }).catch(err => {console.log('ERROR', err)})
             
         })
     }
