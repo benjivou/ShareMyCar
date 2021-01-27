@@ -52,7 +52,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     apply plugin: "androidx.navigation.safeargs.kotlin"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.1"
+
     implementation "androidx.lifecycle:lifecycle-runtime:2.2.0"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
@@ -60,9 +60,19 @@ dependencies {
 
     compile 'com.amitshekhar.android:android-networking:1.0.2'
 
+    ext.retrofit_version = '2.6.0'
+    ext.okhttp_version = '3.11.0'
 
-    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    //noinspection GradleDependency
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    //noinspection GradleDependency
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    //noinspection GradleDependency
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+
+    implementation("com.louiscad.splitties:splitties-toast:$splitties_version")
+    implementation("com.louiscad.splitties:splitties-alertdialog-material:$splitties_version")
 
 
 }

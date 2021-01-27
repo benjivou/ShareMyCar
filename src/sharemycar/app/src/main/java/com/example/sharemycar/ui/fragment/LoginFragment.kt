@@ -5,18 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.error.ANError
-import com.androidnetworking.interfaces.JSONObjectRequestListener
 import com.example.sharemycar.R
-import com.example.sharemycar.data.models.User
+import com.example.sharemycar.data.displayabledata.EmptyDisplayable
+import com.example.sharemycar.data.displayabledata.ErrorDisplayable
+import com.example.sharemycar.data.displayabledata.SuccessDisplayable
 import com.example.sharemycar.databinding.FragmentLoginBinding
-import com.example.sharemycar.viewmodels.ProfileViewModel
-import org.json.JSONObject
+import com.example.sharemycar.ui.viewmodels.ProfileViewModel
+import splitties.toast.toast
 
 /**
  * A simple [Fragment] subclass.
@@ -27,7 +26,8 @@ private const val TAG = "LoginFragment"
 
 class LoginFragment : Fragment() {
 
-    private val userViewModel: ProfileViewModel by activityViewModels()
+    private val profilViewModel: ProfileViewModel by activityViewModels()
+
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -41,59 +41,34 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // sub to the user infos
+        profilViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            if (user != null) {
+                findNavController().popBackStack()
+            }
+        })
+        profilViewModel.userDisplayable.observe(viewLifecycleOwner, {
+            when (it) {
+                is EmptyDisplayable -> toast("Notre serveur à un probléme veuuiller réassayer")
+                is ErrorDisplayable -> {
+                    Log.d(TAG, "onViewCreated: $it")
+                    toast("${it.errorMessage}")
+                }
+                is SuccessDisplayable -> toast(it.content)
+            }
+        })
         binding.apply {
             connexionBtn.setOnClickListener {
-                login()
+                profilViewModel.login(
+                    loginInputTxt.text.toString(),
+                    passwordInputTxt.text.toString()
+                )
             }
             registrationBtn.setOnClickListener {
                 findNavController().navigate(R.id.registrationFragment)
             }
         }
 
-    }
-
-    private fun login() {
-        AndroidNetworking
-            .get("http://${getString(R.string.NODE_IP_ADDRESS)}:8080/api/users/token/{username}/{password}")
-            .addPathParameter("username", binding.loginInputTxt.text.toString())
-            .addPathParameter("password", binding.passwordInputTxt.text.toString())
-            .build()
-            .getAsJSONObject(object : JSONObjectRequestListener {
-                override fun onResponse(response: JSONObject?) {
-
-                    response?.run { // not a good authentification
-                        if (response.has("message")) {
-                            Toast.makeText(
-                                requireContext(),
-                                response.getString("message"),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            userViewModel.user.value = User(response.getString("token"))
-                            findNavController().popBackStack()
-                        }
-                    } ?: kotlin.run {
-                        Log.d(TAG, "onResponse: error response null")
-                        Toast.makeText(
-                            requireContext(),
-                            "Mauvaise version d'application",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-
-                }
-
-                override fun onError(anError: ANError?) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.probleme_de_connexion),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    Log.e(TAG, "onError: ", anError)
-                }
-
-            })
     }
 
 

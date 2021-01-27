@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.sharemycar.viewmodels.ProfileViewModel
+import com.example.sharemycar.ui.viewmodels.ProfileViewModel
 import com.example.sharemycar.R
 import com.example.sharemycar.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -30,11 +30,6 @@ class HomePageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    /*    goScanQRbtn.setOnClickListener { findNavController().navigate(FragmentHomeBinding.actionHomePageToScanQr()) }
-        goToFraudeBtn.setOnClickListener { findNavController().navigate(FragmentHomeBinding.actionHomePageToManuallFraudFormulaire()) }
-        consultStatsBtn.setOnClickListener {
-            findNavController().navigate(FragmentHomeBinding.actionHomePageToLoadingStats("5f99ac7584b0c83808bb1a95"))
-        }*/
 
         // ecoute de la connexion de l'utilisateur
         userViewModel.user.observe(viewLifecycleOwner, Observer { user ->
