@@ -55,12 +55,13 @@ class LoginFragment : Fragment() {
 
     private fun login() {
         AndroidNetworking
-            .get("http://${getString(R.string.NODE_IP_ADDRESS)}:3001/authentification/getToken/{username}/{password}")
+            .get("http://${getString(R.string.NODE_IP_ADDRESS)}:8080/api/users/token/{username}/{password}")
             .addPathParameter("username", binding.loginInputTxt.text.toString())
             .addPathParameter("password", binding.passwordInputTxt.text.toString())
             .build()
             .getAsJSONObject(object : JSONObjectRequestListener {
                 override fun onResponse(response: JSONObject?) {
+
                     response?.run { // not a good authentification
                         if (response.has("message")) {
                             Toast.makeText(
