@@ -16,7 +16,7 @@ const hostname = "localhost"
 const port = 8080
 
 // Activation du server
-const server = app.listen(port, hostname, () => {
+const server = app.listen(port,  () => {
     console.log(`Server listening on port ${hostname}:${port}`)
 })
 

@@ -13,7 +13,7 @@ class LiveDataCallAdapterFactory : CallAdapter.Factory() {
         returnType: Type,
         annotations: Array<Annotation>,
         retrofit: Retrofit
-    ): CallAdapter<*, *>? {
+    ): CallAdapter<*, *> {
         val observableType =
             CallAdapter.Factory.getParameterUpperBound(
                 0,

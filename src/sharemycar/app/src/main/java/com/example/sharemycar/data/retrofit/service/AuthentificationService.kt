@@ -1,23 +1,20 @@
 package com.example.sharemycar.data.retrofit.service
 
-import androidx.lifecycle.MutableLiveData
 import com.example.sharemycar.data.models.User
-import com.example.sharemycar.data.retrofit.ApiResponse
 import com.google.gson.annotations.SerializedName
+import retrofit2.Call
 import retrofit2.http.*
 
 interface UserService {
-    @Headers("Content-Type: application/json")
-    @POST("login")
+    @POST("/users/login")
     fun loginPost(
         @Body userAuthentifiator: UserAuthentificaticator
-    ): MutableLiveData<ApiResponse<User>>
+    ): Call<User>
 
-    @Headers("Content-Type: application/json")
-    @POST("new")
+    @POST("/users/new")
     fun registerPost(
         @Body userAuthentifiator: UserAuthentificaticator
-    ): MutableLiveData<ApiResponse<RequestMessage>>
+    ): Call<RequestMessage>
 }
 
 data class UserAuthentificaticator(

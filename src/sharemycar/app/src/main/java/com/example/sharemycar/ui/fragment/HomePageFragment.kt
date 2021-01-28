@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.sharemycar.ui.viewmodels.ProfileViewModel
 import com.example.sharemycar.R
 import com.example.sharemycar.databinding.FragmentHomeBinding
+import com.example.sharemycar.ui.viewmodels.SessionViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class HomePageFragment : Fragment() {
 
-    private val userViewModel: ProfileViewModel by activityViewModels()
+    private val userViewModel: SessionViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

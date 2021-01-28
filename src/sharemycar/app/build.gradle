@@ -58,7 +58,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
-    compile 'com.amitshekhar.android:android-networking:1.0.2'
 
     ext.retrofit_version = '2.6.0'
     ext.okhttp_version = '3.11.0'

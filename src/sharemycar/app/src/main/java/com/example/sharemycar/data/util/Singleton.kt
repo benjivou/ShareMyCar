@@ -9,10 +9,11 @@ const val URL_API = "http://192.168.1.70:8080/api/"
 
 object Singleton {
 
-    val service: UserService = Retrofit.Builder()
-        .baseUrl(URL_API + "users/")
+   private  val retrofit = Retrofit.Builder()
+        .baseUrl(URL_API )
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(LiveDataCallAdapterFactory())
+      //  .addCallAdapterFactory(LiveDataCallAdapterFactory())
         .build()
-        .create(UserService::class.java)
+    val userService = retrofit.create(UserService::class.java)!!
+
 }
