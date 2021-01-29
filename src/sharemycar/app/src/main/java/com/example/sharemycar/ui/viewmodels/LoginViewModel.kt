@@ -7,6 +7,7 @@ import com.example.sharemycar.data.displayabledata.EmptyDataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.displayabledata.SuccessDataPreprared
 import com.example.sharemycar.data.models.User
+import com.example.sharemycar.data.retrofit.service.LoginBucket
 import com.example.sharemycar.data.retrofit.service.UserAuthentificaticator
 import com.example.sharemycar.data.util.Singleton
 import retrofit2.Call
@@ -20,12 +21,12 @@ class LoginViewModel : ViewModel() {
 
     // login process
     fun login(username: String, password: String) {
-        val result = Singleton.userService.loginPost(UserAuthentificaticator(username, password))
+        val result = Singleton.userService.loginPost(LoginBucket(username, password) )
         result.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
-                val allCourse = response.body()
-                if (allCourse != null) {
-                    data.value = SuccessDataPreprared(allCourse)
+                val body = response.body()
+                if (body != null) {
+                    data.value = SuccessDataPreprared(body)
                 }
                 data.value = EmptyDataPreprared()
             }

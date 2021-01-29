@@ -17,9 +17,13 @@ class RegisterViewModel : ViewModel()  {
     val data: MutableLiveData<DataPreprared<RequestMessage>?> =
         MutableLiveData(null) // current user loaded
 
-    fun register(username: String, password: String) {
+    fun register(username: String, password: String, repassword:String,email:String) {
+        if ( repassword != password){
+            data.value = ErrorDataPreprared(0,"Mot de passe différents")
+            return
+        }
         val result = Singleton.userService.registerPost(
-            UserAuthentificaticator(username, password)
+            UserAuthentificaticator(username, password, email)
         )
         result.enqueue(object : Callback<RequestMessage> {
             override fun onResponse(

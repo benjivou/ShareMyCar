@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface UserService {
     @POST("/users/login")
     fun loginPost(
-        @Body userAuthentifiator: UserAuthentificaticator
+        @Body loginBucket: LoginBucket,
     ): Call<User>
 
     @POST("/users/new")
@@ -16,10 +16,11 @@ interface UserService {
         @Body userAuthentifiator: UserAuthentificaticator
     ): Call<RequestMessage>
 }
-
+data class LoginBucket(@SerializedName("username") var userName: String,   @SerializedName("password") var userPassword: String,)
 data class UserAuthentificaticator(
-    @SerializedName("username") var userID: String,
-    @SerializedName("password") var userPassword: String
+    @SerializedName("username") var userName: String,
+    @SerializedName("password") var userPassword: String,
+    @SerializedName("email") val username: String
 )
 
 data class RequestMessage(

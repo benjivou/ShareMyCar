@@ -22,7 +22,7 @@ router.get('/token/:username/:pwd', async (req, res) => {
 });
 router.post('/new', (req, res) => {
     try {
-        console.log(req)
+        console.log(req.body)
         const user = rest_operator.post(req.body);
         res.status(201).json(user)
     } catch(err) {

@@ -49,20 +49,24 @@ class LoginFragment : Fragment() {
                 findNavController().popBackStack()
             }
         })
-        loginViewModel.data.observe(viewLifecycleOwner, Observer { apiResponse ->
-            when (apiResponse) {
-                is EmptyDataPreprared -> toast("void answer")
-                is ErrorDataPreprared -> toast(apiResponse.errorMessage)
-                is SuccessDataPreprared -> {
-                    sessionViewModel.user.value = apiResponse.content
-                    toast("you are logged in ")
-                }
 
-            }
-        })
 
         binding.apply {
+
+            loginViewModel.data.observe(viewLifecycleOwner, Observer { apiResponse ->
+                connexionBtn.isEnabled = true
+                when (apiResponse) {
+                    is EmptyDataPreprared -> toast("void answer")
+                    is ErrorDataPreprared -> toast(apiResponse.errorMessage)
+                    is SuccessDataPreprared -> {
+                        sessionViewModel.user.value = apiResponse.content
+                        toast("you are logged in ")
+                    }
+
+                }
+            })
             connexionBtn.setOnClickListener {
+                connexionBtn.isEnabled = false
                 loginViewModel.login(
                     loginInputTxt.text.toString(),
                     passwordInputTxt.text.toString()
