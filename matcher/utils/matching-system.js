@@ -15,6 +15,17 @@ class MatchingSystem {
         this.passengerRequest.push(req)
     }
 
+    updatePosition(id, position) {
+        this.driverRequest.forEach(req => {
+            if(req.user.id === id)
+                req.position = position
+        })
+        this.passengerRequest.forEach(req => {
+            if(req.user.id === id)
+                req.position = position
+        })
+    }
+
     runMatching() {
         return new Promise((resolve, reject) => {
             const matches = [];
@@ -26,22 +37,21 @@ class MatchingSystem {
                 this.driverRequest = []
                 this.passengerRequest = [] 
 
-                // TODO - Add matching code strategy
-                let looper;
-                looper = tmpDriver.length > tmpPassenger.length ? tmpDriver : tmpPassenger;
-
-                looper.forEach((val, i) => {
+                // matching strategy's code 
+                tmpDriver.forEach((val, i) => {
                     const d = tmpDriver[i]
-                    const p = tmpPassenger[i]
-                    const maxDist = d.maxDist * 1000
-                    if(maxDist >= geolib.getDistance(d.position, p.position))
-                        matches.push({
-                            'driver': d,
-                            'passenger': p
-                        })
+                    tmpPassenger.forEach((val, i) => {
+                        const p = tmpPassenger[i]
+                        const maxDist = d.maxDist * 1000
+                        if(maxDist >= geolib.getDistance(d.position, p.position))
+                            matches.push({
+                                'driver': d,
+                                'passenger': p
+                            })
+                    })
                 })
 
-                // Suppression des requetes qui ont matché
+                // Suppress request that have matched
                 matches.forEach(match => {
                     tmpDriver.splice(tmpDriver.indexOf(match.driver), 1);
                     tmpPassenger.splice(tmpPassenger.indexOf(match.passenger), 1);
@@ -54,7 +64,6 @@ class MatchingSystem {
                 this.isProcessing = false;
             }
             resolve(matches)
-            
         })
     }
 }
