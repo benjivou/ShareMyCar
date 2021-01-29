@@ -50,8 +50,8 @@ class MqttService {
     }
 
     notifyMatch(match) {
-        const driver = match.driver;
-        const passenger = match.passenger;
+        const driver = match.driver.user;
+        const passenger = match.passenger.user;
         this.client.publish(passenger.id, JSON.stringify(driver))
         this.client.publish(driver.id, JSON.stringify(passenger))
     }
