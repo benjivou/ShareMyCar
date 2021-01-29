@@ -15,6 +15,17 @@ class MatchingSystem {
         this.passengerRequest.push(req)
     }
 
+    updatePosition(id, position) {
+        this.driverRequest.forEach(req => {
+            if(req.user.id === id)
+                req.position = position
+        })
+        this.passengerRequest.forEach(req => {
+            if(req.user.id === id)
+                req.position = position
+        })
+    }
+
     runMatching() {
         return new Promise((resolve, reject) => {
             const matches = [];
@@ -26,7 +37,7 @@ class MatchingSystem {
                 this.driverRequest = []
                 this.passengerRequest = [] 
 
-                // TODO - Add matching code strategy
+                // matching strategy's code 
                 let looper;
                 looper = tmpDriver.length > tmpPassenger.length ? tmpDriver : tmpPassenger;
 
@@ -54,7 +65,6 @@ class MatchingSystem {
                 this.isProcessing = false;
             }
             resolve(matches)
-            
         })
     }
 }
