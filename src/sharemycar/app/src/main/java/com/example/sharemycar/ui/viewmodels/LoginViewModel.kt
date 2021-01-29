@@ -21,7 +21,7 @@ class LoginViewModel : ViewModel() {
 
     // login process
     fun login(username: String, password: String) {
-        val result = Singleton.userService.loginPost(LoginBucket(username, password) )
+        val result = Singleton.userService.loginPost(LoginBucket(username, password))
         result.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 val body = response.body()
@@ -35,6 +35,30 @@ class LoginViewModel : ViewModel() {
                 data.value = t.message?.let { ErrorDataPreprared(0, it) }
             }
         })
+    }
+
+    fun register(username: String, password: String, repassword: String, email: String) {
+        if (repassword != password) {
+            data.value = ErrorDataPreprared(0, "Mot de passe différents")
+            return
+        }
+        val result = Singleton.userService.registerPost(
+            UserAuthentificaticator(username, password, email)
+        )
+        result.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val body = response.body()
+                if (body != null) {
+                    data.value = SuccessDataPreprared(body)
+                }
+                data.value = EmptyDataPreprared()
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                data.value = t.message?.let { ErrorDataPreprared(0, it) }
+            }
+        })
+
     }
 }
 

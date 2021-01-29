@@ -6,15 +6,15 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface UserService {
-    @POST("/users/login")
+    @POST("users/login")
     fun loginPost(
         @Body loginBucket: LoginBucket,
     ): Call<User>
 
-    @POST("/users/new")
+    @POST("users/new")
     fun registerPost(
         @Body userAuthentifiator: UserAuthentificaticator
-    ): Call<RequestMessage>
+    ): Call<User>
 }
 data class LoginBucket(@SerializedName("username") var userName: String,   @SerializedName("password") var userPassword: String,)
 data class UserAuthentificaticator(
@@ -23,6 +23,3 @@ data class UserAuthentificaticator(
     @SerializedName("email") val username: String
 )
 
-data class RequestMessage(
-    @SerializedName("message") var message: String,
-)
