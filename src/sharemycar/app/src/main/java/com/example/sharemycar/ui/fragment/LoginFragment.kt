@@ -50,7 +50,6 @@ class LoginFragment : Fragment() {
             }
         })
 
-
         binding.apply {
 
             loginViewModel.data.observe(viewLifecycleOwner, Observer { apiResponse ->
