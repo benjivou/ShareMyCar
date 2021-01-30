@@ -5,6 +5,8 @@ class MatchingSystem {
         this.driverRequest = []
         this.passengerRequest = []
         this.isProcessing = false;
+        this.refusedMatches = []
+        this.acceptedMatches = []
     }
 
     addDriverRequest(req) {
@@ -13,6 +15,56 @@ class MatchingSystem {
 
     addPassengerRequest(req) {
         this.passengerRequest.push(req)
+    }
+
+    findMatchStatus(match) {
+        const status = 'N/A'
+        this.acceptedMatches.forEach((match) => {
+            if(acceptedMatch.driver.id === match.driver.id && acceptedMatch.passenger.id === match.passenger.id) {
+                status = 'accepted';
+            }
+        })
+        this.refusedMatches.forEach((match) => {
+            if(acceptedMatch.driver.id === match.driver.id && acceptedMatch.passenger.id === match.passenger.id) {
+                status = 'refused';
+            }
+        })
+
+        return status;
+    }
+
+    acceptMatch(acceptedMatch) {
+        let status = null;
+        const matchStatus = findMatchStatus(acceptedMatch)
+        switch(matchStatus) {
+            case 'accepted':
+                status = 'accept'
+                break;
+            case 'refused':
+                status = 'refuse'
+                break;
+            case 'N/A':
+            default:
+                this.acceptedMatches.push(acceptedMatch)
+                break;
+        }
+        return status;
+    }
+
+    refuseMatch(refusedMatch) {
+        let status = null;
+        const matchStatus = findMatchStatus(refusedMatch)
+        switch(matchStatus) {
+            case 'accepted':
+            case 'refused':
+                status = 'refuse'
+                break;
+            case 'N/A':
+            default:
+                this.refusedMatches.push(refusedMatch)
+                break;
+        }
+        return status;
     }
 
     updatePosition(id, position) {

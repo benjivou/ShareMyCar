@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 router.get('/token/:username/:pwd', async (req, res) => {
     //res.status(200).json(users);
     try {
-        console.log(req)
+        //console.log(req)
         const user = rest_operator.get().find(u => u.username === req.params.username && u.password === req.params.pwd);
         await res.json({token: user.id})
     } catch(err) {
@@ -22,7 +22,7 @@ router.get('/token/:username/:pwd', async (req, res) => {
 });
 router.post('/new', (req, res) => {
     try {
-        console.log(req.body)
+        //console.log(req)
         const user = rest_operator.post(req.body);
         res.status(201).json(user)
     } catch(err) {
@@ -31,7 +31,7 @@ router.post('/new', (req, res) => {
 })
 router.post('/login', (req, res) => {
     try {
-        console.log(req.body)
+        //console.log(req.body)
         const data = req.body;
         const user = rest_operator.get()
                         .find(u => u.username === data.username && u.password === data.password);

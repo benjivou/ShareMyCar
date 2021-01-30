@@ -15,8 +15,6 @@ const val COLLECTION_HOME_DRIVER = 0
 const val COLLECTION_HOME_PASSENGER = 2
 class HomeCollectionAdapter(fm: FragmentManager,lifecycle: Lifecycle) : FragmentStateAdapter(fm,lifecycle){
 
-
-
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
