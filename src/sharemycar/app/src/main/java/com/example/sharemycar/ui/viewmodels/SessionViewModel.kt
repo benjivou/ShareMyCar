@@ -7,5 +7,5 @@ import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
 
 class SessionViewModel :ViewModel() {
     val user: MutableLiveData<User?> = MutableLiveData(null) // current user loaded
-    val requesterTypeEnum: RequesterTypeEnum ?= null
+    var requesterTypeEnum: RequesterTypeEnum ?= null
 }

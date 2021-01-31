@@ -12,7 +12,7 @@ interface StartProcessService {
     ): Call<MatchObject>
 }
 
-data class MatchObject(
+class MatchObject(
     @SerializedName("requester") val requester: RequesterTypeEnum,
     @SerializedName("user") val user: UserStartProcess,
     @SerializedName("dest") val dest: PositionLatLong,
