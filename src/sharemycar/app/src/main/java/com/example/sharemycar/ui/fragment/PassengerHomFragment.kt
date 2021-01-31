@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.sharemycar.R
 import com.example.sharemycar.data.displayabledata.EmptyDataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
@@ -76,6 +77,7 @@ class PassengerHomFragment : Fragment() {
                     is SuccessDataPreprared -> {
                         sessionViewModel.requesterTypeEnum = RequesterTypeEnum.DRIVER
                         toast("We are searching for your partner ")
+                        findNavController().navigate(HomePageFragmentDirections.actionHomePageToMapsFragment())
                     }
 
                 }

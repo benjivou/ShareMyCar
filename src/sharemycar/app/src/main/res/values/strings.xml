@@ -24,4 +24,11 @@
     <string name="ok_btn_txt">Confirmer</string>
     <string name="point_d_arriv">Point d\'arrivé</string>
     <string name="subscribt_btn_txt">Inscription</string>
+
+    <string name="back_home">Retour à l\'accueil</string>
+    <string name="time_square">time square msg</string>
+    <string name="i_am_snippet">I am snippet</string>
+    <string name="icM">icm</string>
+    <string name="chelsea_market">chelsea</string>
+
 </resources>

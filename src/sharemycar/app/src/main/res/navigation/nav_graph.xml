@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homePage">
+    app:startDestination="@id/thanksFragment">
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.sharemycar.ui.fragment.LoginFragment"
@@ -15,10 +15,41 @@
         android:label="fragment_home_page"
         tools:layout="@layout/fragment_home">
 
+        <action
+            android:id="@+id/action_homePage_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.sharemycar.ui.fragment.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/thanksFragment"
+        android:name="com.example.sharemycar.ui.fragment.ThanksFragment"
+        android:label="fragment_thanks"
+        tools:layout="@layout/fragment_thanks" >
+        <action
+            android:id="@+id/action_thanksFragment_to_homePage"
+            app:destination="@id/homePage" />
+    </fragment>
+    <fragment
+        android:id="@+id/driverHomeFragment2"
+        android:name="com.example.sharemycar.ui.fragment.DriverHomeFragment"
+        android:label="fragment_driver_home"
+        tools:layout="@layout/fragment_driver_home" />
+    <fragment
+        android:id="@+id/passengerHomFragment2"
+        android:name="com.example.sharemycar.ui.fragment.PassengerHomFragment"
+        android:label="fragment_passenger_hom"
+        tools:layout="@layout/fragment_passenger_hom" >
+        <action
+            android:id="@+id/action_passengerHomFragment2_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.sharemycar.ui.fragment.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 </navigation>

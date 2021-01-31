@@ -30,14 +30,16 @@ class MqttService {
                     const userId = splitData[0].trim();
                     const position = JSON.parse(splitData[1].trim());
                     this.matcher.updatePosition(userId, position);
+                    
+                    this.matcher.runMatching().then(matches => {
+                        //console.log('HERE', matches)
+                        matches.forEach(match => {
+                            this.notifyMatch(match);
+                        })
+                    }).catch(err => {console.log('ERROR', err)})
                 }
     
-                this.matcher.runMatching().then(matches => {
-                    //console.log('HERE', matches)
-                    matches.forEach(match => {
-                        this.notifyMatch(match);
-                    })
-                }).catch(err => {console.log('ERROR', err)})
+                
             }
             
         })
@@ -65,8 +67,9 @@ class MqttService {
             status = this.matcher.refuseMatch(match);
         }
 
-        if(status && status !== null)
+        if(status && status !== null) {
             this.notifyMatchStatus(status, match.driver.user.id, match.passenger.user.id);
+        }
     }
 
     notifyMatch(match) {

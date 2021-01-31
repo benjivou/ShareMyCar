@@ -1,18 +1,25 @@
 package com.example.sharemycar.data.retrofit.service.rest
 
+
 import android.text.Layout
-import com.example.sharemycar.data.untracked.PLACES_KEY
+import com.example.sharemycar.data.models.Directions
+import com.example.sharemycar.data.models.NearbySearch
+import com.google.android.gms.maps.model.LatLng
+
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface GoogleMethods {
+
+
+    // Google Directions API -- directions
     @GET("directions/json")
     fun getDirections(
-        @Query(value = "origin") origin: String,
+        @Query("origin") origin: String,
         @Query("destination") destination: String,
-        @Query("key") key: String = PLACES_KEY
-    ): Call<Layout.Directions>
+        @Query("key") key: String
+    ): Call<Directions>
 }
 
 data class Route(
