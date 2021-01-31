@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.sharemycar.R
 import com.example.sharemycar.databinding.FragmentDriverHomeBinding
 import com.example.sharemycar.databinding.FragmentPassengerHomBinding
+import com.example.sharemycar.ui.viewmodels.ResearchViewModel
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
@@ -32,6 +34,7 @@ private const val ARG_PARAM2 = "param2"
 private const val TAG = "DriverHomeFragment"
 class DriverHomeFragment : Fragment() {
     private val userViewModel: SessionViewModel by activityViewModels()
+    private val researchViewModel:ResearchViewModel by viewModels (  )
 
     private var _binding: FragmentDriverHomeBinding? = null
     private val binding get() = _binding!!
