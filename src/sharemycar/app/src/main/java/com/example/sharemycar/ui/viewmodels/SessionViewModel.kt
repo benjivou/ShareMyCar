@@ -3,7 +3,9 @@ package com.example.sharemycar.ui.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sharemycar.data.models.User
+import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
 
 class SessionViewModel :ViewModel() {
     val user: MutableLiveData<User?> = MutableLiveData(null) // current user loaded
+    val requesterTypeEnum: MutableLiveData<RequesterTypeEnum?> = MutableLiveData(null)
 }
