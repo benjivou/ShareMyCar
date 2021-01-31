@@ -8,93 +8,95 @@
     android:scrollbarThumbHorizontal="@color/colorPrimary"
     tools:context=".ui.fragment.RegistrationFragment">
 
-
-    <TextView
-        android:id="@+id/passwordTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/mot_de_passe"
-        android:textColor="#673AB7"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619" />
-
-    <TextView
-        android:id="@+id/logintxt"
+    <EditText
+        android:id="@+id/emailInputTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/login"
-        android:textColor="#673AB7"
-        app:layout_constraintBottom_toTopOf="@+id/loginInputTxt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.265"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/passwordInputTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="textPassword"
-        android:textColor="#673AB7"
-        android:textColorHighlight="#673AB7"
-        android:textColorHint="#673AB7"
-        android:textColorLink="#673AB7"
-        android:textCursorDrawable="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTxt"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/loginInputTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:ems="10"
+        android:hint="@string/email"
         android:inputType="text"
         android:textColor="#673AB7"
         android:textColorHighlight="#673AB7"
         android:textColorHint="#673AB7"
         android:textColorLink="#673AB7"
         android:textCursorDrawable="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/passwordTxt"
+        app:layout_constraintBottom_toTopOf="@+id/loginInputTxt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-    <Button
-        android:id="@+id/backBtn"
+    <EditText
+        android:id="@+id/loginInputTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retour"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/registrationProcessBtn"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="@string/login"
+        android:inputType="text"
+        android:textColor="#673AB7"
+        android:textColorHighlight="#673AB7"
+        android:textColorHint="#673AB7"
+        android:textColorLink="#673AB7"
+        android:textCursorDrawable="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/passwordInputTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailInputTxt" />
+
+    <EditText
+        android:id="@+id/passwordInputTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="@string/mot_de_passe"
+        android:inputType="textPassword"
+        android:textColor="#673AB7"
+        android:textColorHighlight="#673AB7"
+        android:textColorHint="#673AB7"
+        android:textColorLink="#673AB7"
+        android:textCursorDrawable="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/rePasswordInputTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginInputTxt" />
+
+    <EditText
+        android:id="@+id/rePasswordInputTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="@string/confirmer_mot_de_passe"
+        android:inputType="textPassword"
+        android:textColor="#673AB7"
+        android:textColorHighlight="#673AB7"
+        android:textColorHint="#673AB7"
+        android:textColorLink="#673AB7"
+        android:textCursorDrawable="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/backBtn"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordInputTxt" />
 
 
-    <TextView
-        android:id="@+id/textView6"
+    <Button
+        android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ticket_control_application"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#673AB7"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/logintxt"
+        android:layout_marginBottom="16dp"
+        android:text="Retour"
+        app:layout_constraintBottom_toTopOf="@+id/registrationProcessBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Ticket control Application" />
+        app:layout_constraintTop_toBottomOf="@+id/rePasswordInputTxt" />
 
     <Button
         android:id="@+id/registrationProcessBtn"
@@ -104,7 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/backBtn"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInputTxt" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
