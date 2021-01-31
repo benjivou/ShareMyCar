@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.sharemycar.R
 import com.example.sharemycar.databinding.FragmentHomeBinding
-import com.example.sharemycar.databinding.FragmentLoginBinding
 import com.example.sharemycar.ui.adapter.COLLECTION_HOME_DRIVER
 import com.example.sharemycar.ui.adapter.COLLECTION_HOME_MAIN
 import com.example.sharemycar.ui.adapter.COLLECTION_HOME_PASSENGER

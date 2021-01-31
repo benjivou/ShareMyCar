@@ -3,15 +3,11 @@
 
 
     <string name="retry">retry</string>
-    <string name="voir_mes_stats">See my stats</string>
-    <string name="cr_er_une_fraude">Declare a fraud</string>
-    <string name="nombre_de_tickets_controll_s">Number of controlled tickets:</string>
-    <string name="nombre_de_fraudes_d_clar_es">Number of frauds declared:</string>
     <string name="return_homepage">Return to homepage</string>
     <string name="none">NONE</string>
     <string name="stats_are_loading">Stats are loading</string>
     <string name="ok">Ok</string>
-    <string name="probleme_de_connexion">"Conection issues, please try again"</string>
+    <string name="probleme_de_connexion">Connection issues, please try again</string>
     <string name="logging_in">Logging in</string>
     <string name="billet_en_cours_de_traitement">Ticket processing</string>
     <string name="num_ro_de_carte_bleu">Credit card number</string>
@@ -25,4 +21,7 @@
     <string name="confirmer_mot_de_passe">Confirmer mot de passe</string>
     <string name="email">Email</string>
     <string name="appName">ShareMyCar</string>
+    <string name="ok_btn_txt">Confirmer</string>
+    <string name="point_d_arriv">Point d\'arrivé</string>
+    <string name="subscribt_btn_txt">Inscription</string>
 </resources>

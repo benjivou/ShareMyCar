@@ -7,16 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.DriverHomeFragment">
 
-    <EditText
-        android:id="@+id/destDriverInput"
-        android:layout_width="0dp"
+    <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="Point d'arrivé"
-        android:inputType="textPersonName"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,33 +25,31 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
+        android:hint="Nombre de places libres"
         android:inputType="numberSigned|textPersonName"
         android:keyboardNavigationCluster="false"
-        android:numeric="signed"
-        android:hint="Nombre de places libres"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/destDriverInput" />
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
 
     <EditText
         android:id="@+id/longDriverInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
+        android:hint="Temps de detours ( en min)"
         android:inputType="numberSigned|textPersonName"
         android:keyboardNavigationCluster="false"
-        android:numeric="signed"
-        android:hint="Temps de detours ( en min)"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numDriverInput" />
 
@@ -61,9 +57,9 @@
         android:id="@+id/startDriverBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="Confirmer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
