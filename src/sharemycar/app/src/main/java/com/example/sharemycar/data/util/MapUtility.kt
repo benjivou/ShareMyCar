@@ -2,8 +2,8 @@ package com.example.sharemycar.data.util
 
 import android.content.Context
 import com.example.sharemycar.R
+import com.example.sharemycar.data.models.Route
 
-import com.example.sharemycar.data.retrofit.service.rest.Route
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*

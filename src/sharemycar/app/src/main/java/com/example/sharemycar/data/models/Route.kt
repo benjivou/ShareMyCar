@@ -1,4 +1,4 @@
-package liuuu.laurence.maputility.model.others
+package com.example.sharemycar.data.models
 
 data class Route(val startName: String = "",
                  val endName: String = "",

@@ -9,4 +9,5 @@ class SessionViewModel : ViewModel() {
     val user: MutableLiveData<User?> = MutableLiveData(null) // current user loaded
 
     var requesterTypeEnum: RequesterTypeEnum? = null
+
 }

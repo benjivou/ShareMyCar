@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/thanksFragment">
+    app:startDestination="@id/homePage">
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.sharemycar.ui.fragment.LoginFragment"
@@ -42,14 +42,15 @@
         android:id="@+id/passengerHomFragment2"
         android:name="com.example.sharemycar.ui.fragment.PassengerHomFragment"
         android:label="fragment_passenger_hom"
-        tools:layout="@layout/fragment_passenger_hom" >
-        <action
-            android:id="@+id/action_passengerHomFragment2_to_mapsFragment"
-            app:destination="@id/mapsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_passenger_hom" />
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.example.sharemycar.ui.fragment.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <argument
+            android:name="dest"
+            app:argType="string" />
+
+    </fragment>
 </navigation>

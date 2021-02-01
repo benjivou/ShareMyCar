@@ -17,8 +17,10 @@ import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
 import com.example.sharemycar.databinding.FragmentPassengerHomBinding
 import com.example.sharemycar.ui.viewmodels.ResearchViewModel
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.gson.Gson
 import splitties.toast.toast
 import java.util.*
 
@@ -75,9 +77,18 @@ class PassengerHomFragment : Fragment() {
                     is EmptyDataPreprared -> toast("void answer")
                     is ErrorDataPreprared -> toast(apiResponse.errorMessage)
                     is SuccessDataPreprared -> {
-                        sessionViewModel.requesterTypeEnum = RequesterTypeEnum.DRIVER
+                        sessionViewModel.requesterTypeEnum = RequesterTypeEnum.PASSENGER
                         toast("We are searching for your partner ")
-                        findNavController().navigate(HomePageFragmentDirections.actionHomePageToMapsFragment())
+                        findNavController().navigate(
+                            HomePageFragmentDirections.actionHomePageToMapsFragment(
+                                Gson().toJson(
+                                    LatLng(
+                                        apiResponse.content.dest.latitude,
+                                        apiResponse.content.dest.longitude
+                                    )
+                                )
+                            )
+                        )
                     }
 
                 }
