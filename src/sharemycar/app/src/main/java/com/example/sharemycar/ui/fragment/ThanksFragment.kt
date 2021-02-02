@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.sharemycar.R
+import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
 import com.example.sharemycar.databinding.FragmentThanksBinding
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
 
@@ -42,12 +43,12 @@ class ThanksFragment : Fragment() {
     }
 
     fun displayThanksMessage() {
-        sessionViewModel.isDriver.observe(viewLifecycleOwner, Observer {
-            if(it)
+
+            if(sessionViewModel.requesterTypeEnum == RequesterTypeEnum.DRIVER)
                 changeThanksMessage("Merci d'avoir pris des passagers sur votre trajet.\nLa Nature te remercie")
             else
                 changeThanksMessage("Votre partenaire de covoiturage est là.\nNous te souhaitons un bon voyage")
-        })
+
     }
 
     fun changeThanksMessage(str: String) {

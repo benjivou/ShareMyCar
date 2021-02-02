@@ -1,3 +1,5 @@
 backend/node_modules/
 matcher/node_modules/
 src/sharemycar/app/src/main/java/com/example/sharemycar/data/untracked/
+src/sharemycar/secure.properties
+src/sharemycar/app/src/debug/res/values/google_maps_api.xml
