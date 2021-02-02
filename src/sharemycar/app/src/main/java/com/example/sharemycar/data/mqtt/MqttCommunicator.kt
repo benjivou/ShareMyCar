@@ -16,7 +16,7 @@ var connectionFailure: Int = 0;
 
 class MqttCommunicator {
     private lateinit var mqttClient: MqttAndroidClient
-    private val SERVER_URL: String = "tcp://localhost:1883" //"tcp://192.168.1.148:1883"
+    private val SERVER_URL: String = "tcp://broker.emqx.io:1883" //"tcp://192.168.1.148:1883"
     private val TAG = "AndroidMqttClient"
     private var subscribedTopics: MutableList<String> = ArrayList()
     private var userId: Long = -1

@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 
 class MqttService {
     constructor(matchingSystem) {
-        this.mqttBrokerUrl = 'mqtt://localhost:1883'
+        this.mqttBrokerUrl = 'mqtt://broker.emqx.io:1883'
         this.clientId = 'ShareMyCarMacther'
         this.client = mqtt.connect(this.mqttBrokerUrl, {clientId: this.clientId})
         this.driverTopic = 'share-my-car-driver'

@@ -44,11 +44,11 @@ class ThanksFragment : Fragment() {
             findNavController().navigate(R.id.action_thanksFragment_to_homePage)
         }
 
-        sessionViewModel.user.observe(viewLifecycleOwner, Observer {
+        /*sessionViewModel.user.observe(viewLifecycleOwner, Observer {
             if(it != null)
                 mqtt = MqttCommunicator(requireContext(), it.id, matchViewModel);
-        })
-        //mqtt = MqttCommunicator(requireContext(), 666, matchViewModel);
+        })*/
+        mqtt = MqttCommunicator(requireContext(), 666, matchViewModel);
 
         return binding.root
     }
