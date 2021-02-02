@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.sharemycar.R
 import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
+import com.example.sharemycar.data.mqtt.MqttCommunicator
 import com.example.sharemycar.databinding.FragmentThanksBinding
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
 
@@ -24,6 +25,7 @@ class ThanksFragment : Fragment() {
 
     private var _binding: FragmentThanksBinding? = null
     private val binding get() = _binding!!
+    private lateinit var mqtt: MqttCommunicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,7 @@ class ThanksFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mqtt = MqttCommunicator(requireContext());
         _binding = FragmentThanksBinding.inflate(inflater, container, false)
         displayThanksMessage()
         binding.backHomeBtn.setOnClickListener {

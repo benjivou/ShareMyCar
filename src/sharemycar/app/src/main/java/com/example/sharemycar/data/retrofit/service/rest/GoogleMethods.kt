@@ -1,7 +1,10 @@
 package com.example.sharemycar.data.retrofit.service.rest
 
 
+
 import com.example.sharemycar.data.models.Directions
+import android.text.Layout
+import com.example.sharemycar.data.untracked.PLACES_KEY
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,5 +19,6 @@ interface GoogleMethods {
         @Query("destination") destination: String,
         @Query("key") key: String
     ): Call<Directions>
+
 }
 
