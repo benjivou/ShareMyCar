@@ -13,8 +13,6 @@ import com.example.sharemycar.data.util.Singleton
 import com.example.sharemycar.ui.livedata.LocationLiveData
 import com.google.android.gms.maps.model.LatLng
 import convertLatLng
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,20 +38,22 @@ class MapsViewModels(context: Context, dest: LatLng) : ViewModel() {
         // when the user sensor change
         _pathToTarget.addSource(_myLocation, Observer {
             _locationDestData.value?.run {
-                positionChange(it, this)
+                positionDestChange(it, this)
             }?: toast("Pas de destination")
         }
 
         )
         _pathToTarget.addSource(_locationDestData, Observer {
             _myLocation.value?.run {
-                positionChange(this, it)
+                positionDestChange(this, it)
             }?: toast("Pas de position")
         })
     }
 
-
-    fun positionChange(origin: LatLng, dest: LatLng) {
+    fun positionUserChange(origin: LatLng, dest: LatLng) {
+        
+    }
+    fun positionDestChange(origin: LatLng, dest: LatLng) {
         val directionsCall = Singleton.googleService.getDirections(
             origin.convertLatLng(),
             dest.convertLatLng(),
