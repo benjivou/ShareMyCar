@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.sharemycar.R
-import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
+import com.example.sharemycar.data.retrofit.RequesterTypeEnum
 import com.example.sharemycar.data.mqtt.MqttCommunicator
 import com.example.sharemycar.databinding.FragmentThanksBinding
 import com.example.sharemycar.ui.viewmodels.MatchViewModel

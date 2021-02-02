@@ -7,10 +7,10 @@ import com.example.sharemycar.data.displayabledata.DataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.models.User
 import com.example.sharemycar.data.retrofit.RetrofitActor
-import com.example.sharemycar.data.retrofit.service.rest.MatchObject
-import com.example.sharemycar.data.retrofit.service.rest.PositionLatLong
-import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
-import com.example.sharemycar.data.retrofit.service.rest.UserStartProcess
+import com.example.sharemycar.data.retrofit.MatchObject
+import com.example.sharemycar.data.retrofit.PositionLatLong
+import com.example.sharemycar.data.retrofit.RequesterTypeEnum
+import com.example.sharemycar.data.retrofit.UserStartProcess
 import com.example.sharemycar.data.util.Singleton
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place

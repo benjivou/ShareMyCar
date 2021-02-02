@@ -13,7 +13,7 @@ import com.example.sharemycar.R
 import com.example.sharemycar.data.displayabledata.EmptyDataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.displayabledata.SuccessDataPreprared
-import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
+import com.example.sharemycar.data.retrofit.RequesterTypeEnum
 import com.example.sharemycar.databinding.FragmentDriverHomeBinding
 import com.example.sharemycar.ui.viewmodels.ResearchViewModel
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
