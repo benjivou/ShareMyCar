@@ -48,7 +48,7 @@ class MapsViewModels(context: Context, dest: LatLng) : ViewModel() {
         _pathToTarget.addSource(_locationDestData, Observer {
             _myLocation.value?.run {
                 positionChange(this, it)
-            }?: toast("Pas de position")
+            }
         })
     }
 

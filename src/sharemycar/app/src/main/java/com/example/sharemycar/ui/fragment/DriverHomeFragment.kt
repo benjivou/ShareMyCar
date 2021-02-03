@@ -81,6 +81,7 @@ class DriverHomeFragment : Fragment() {
                     )
                 }
                 else{
+                    startDriverBtn.isEnabled = true
                     toast("veuillez saisir un détour maximum valide")
                 }
 
@@ -88,7 +89,6 @@ class DriverHomeFragment : Fragment() {
             researchViewModel.data.observe(viewLifecycleOwner, Observer { apiResponse ->
                 startDriverBtn.isEnabled = true
                 when (apiResponse) {
-                    is EmptyDataPreprared -> toast("void answer")
                     is ErrorDataPreprared -> toast(apiResponse.errorMessage)
                     is SuccessDataPreprared -> {
                         sessionViewModel.requesterTypeEnum = RequesterTypeEnum.DRIVER
