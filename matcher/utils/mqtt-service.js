@@ -20,7 +20,7 @@ class MqttService {
             console.log('Got message')
             console.log(topic)
             if(topic === this.matchTopic) {
-                this._handleMatchWill(data);
+                this._handleMatchWill(data.toString());
             } else {
                 if(topic === this.driverTopic) {
                    
@@ -78,13 +78,22 @@ class MqttService {
     notifyMatch(match) {
         const driver = match.driver.user;
         const passenger = match.passenger.user;
-        this.client.publish(passenger.id, JSON.stringify(driver))
-        this.client.publish(driver.id, JSON.stringify(passenger))
+        this.matcher.addMatch(match)
+        this.client.publish(`${passenger.id}`, JSON.stringify(driver));
+        this.client.publish(`${driver.id}`, JSON.stringify(passenger));
     }
 
     notifyMatchStatus(status, driverId, passengerId) {
         this.client.publish(passengerId, status);
         this.client.publish(driverId, status);
+        if(status === 'accept') {
+            const topic1 = Date.now();
+            this.client.publish(passengerId, `pub/${topic1}`);
+            this.client.publish(driverId, `sub/${topic1}`);
+            const topic2 = Date.now();
+            this.client.publish(passengerId, `sub/${topic2}`);
+            this.client.publish(driverId, `pub/${topic2}`);
+        }
     }
 
 }
