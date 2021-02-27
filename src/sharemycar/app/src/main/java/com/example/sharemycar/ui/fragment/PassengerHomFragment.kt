@@ -64,7 +64,7 @@ class PassengerHomFragment : Fragment() {
                 startPassengerBtn.isEnabled = false
 
                 researchViewModel.startSearchProcess(
-                    RequesterTypeEnum.DRIVER,
+                    RequesterTypeEnum.PASSENGER,
                     sessionViewModel.user.value!!,
                     null
                 )

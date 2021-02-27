@@ -2,11 +2,6 @@ package com.example.sharemycar.data.mqtt
 
 import android.content.Context
 import android.util.Log
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import com.example.sharemycar.data.models.User
-import com.example.sharemycar.ui.viewmodels.MatchViewModel
-import com.example.sharemycar.ui.viewmodels.SessionViewModel
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.eclipse.paho.android.service.MqttAndroidClient
@@ -14,11 +9,12 @@ import org.eclipse.paho.client.mqttv3.*
 
 var connectionFailure: Int = 0;
 
-class MqttCommunicator (ctx: Context, val userId: Long, val matchViewModel: MatchViewModel){
+class MqttCommunicator(ctx: Context, val userId: Long, val topic: String="", val sub: Boolean = true) {
     private lateinit var mqttClient: MqttAndroidClient
-    private val SERVER_URL: String = "tcp://localhost:1883" //"tcp://192.168.1.148:1883"
+    private val SERVER_URL: String = "tcp://broker.emqx.io:1883" //"tcp://192.168.1.148:1883"
     private val TAG = "AndroidMqttClient"
     private var subscribedTopics: MutableList<String> = ArrayList()
+    var isConnected = false;
 
     init {
         connect(ctx)
@@ -34,10 +30,11 @@ class MqttCommunicator (ctx: Context, val userId: Long, val matchViewModel: Matc
             override fun messageArrived(topic: String?, message: MqttMessage?) {
                 Log.d(TAG, "Receive message: ${message.toString()} from topic: $topic")
                 handleMessage(topic!!, message.toString())
+
             }
 
             override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                TODO("Not yet implemented")
+                Log.d(TAG, "deliveryComplete: job done!")
             }
 
         })
@@ -47,13 +44,14 @@ class MqttCommunicator (ctx: Context, val userId: Long, val matchViewModel: Matc
             mqttClient.connect(options, null, object : IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.d(TAG, "Connection success")
-                    subscribe("$userId")
+                    isConnected = true
+                    if (sub) subscribe("$topic")
                 }
 
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
                     Log.d(TAG, "Connection failure")
                     connectionFailure += 1
-                    if(connectionFailure < 2) {
+                    if (connectionFailure < 2) {
                         Log.d(TAG, "Retrying to connect...")
                         connect(context)
                     }
@@ -67,6 +65,7 @@ class MqttCommunicator (ctx: Context, val userId: Long, val matchViewModel: Matc
     fun subscribe(topic: String, qos: Int = 1) {
         Log.d(TAG, "TRYING TO SUBSCRIBE")
         try {
+
             mqttClient.subscribe(topic, qos, null, object : IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.d(TAG, "Subscribed to $topic")
@@ -104,6 +103,7 @@ class MqttCommunicator (ctx: Context, val userId: Long, val matchViewModel: Matc
     }
 
     private fun unsubscribeToAll() {
+        isConnected = false
         subscribedTopics.forEach { topic ->
             try {
                 mqttClient.unsubscribe(topic, null, object : IMqttActionListener {
@@ -139,7 +139,7 @@ class MqttCommunicator (ctx: Context, val userId: Long, val matchViewModel: Matc
     }
 
     private fun handleMessage(topic: String, msg: String) {
-        if(topic == "$userId") {
+        if (topic == "$userId") {
             if (msg.trim() == "accept") {
                 // The match is accepted
                 Log.d(TAG, "THE MATCH IS ACCEPTED")
@@ -152,25 +152,10 @@ class MqttCommunicator (ctx: Context, val userId: Long, val matchViewModel: Matc
                 val matchJSON: JsonObject = parser.parse(msg.trim()) as JsonObject
 
                 // Save data of the user in MatchViewModel
-                saveMatch(matchJSON)
+                //   saveMatch(matchJSON)
             }
         }
     }
 
-    private fun saveMatch(match: JsonObject) {
-        val driverUserJson = match.getAsJsonObject("driver").getAsJsonObject("user")
-        val driver: User = User(driverUserJson.getAsJsonPrimitive("id").asLong,
-                                driverUserJson.getAsJsonPrimitive("username").asString,
-                                driverUserJson.getAsJsonPrimitive("email").asString)
-
-
-        val passengerUserJson = match.getAsJsonObject("passenger").getAsJsonObject("user")
-        val passenger: User = User(passengerUserJson.getAsJsonPrimitive("id").asLong,
-                                    passengerUserJson.getAsJsonPrimitive("username").asString,
-                                    passengerUserJson.getAsJsonPrimitive("email").asString)
-
-        matchViewModel.driver.value = driver
-        matchViewModel.passenger.value = passenger
-    }
 
 }
