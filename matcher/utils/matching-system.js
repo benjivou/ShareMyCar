@@ -68,13 +68,16 @@ class MatchingSystem {
     }
 
     updatePosition(id, position) {
+        id = +id
         this.driverRequest.forEach(req => {
-            if(req.user.id === id)
+            if(req.user.id === id) {
                 req.position = position
+            }
         })
         this.passengerRequest.forEach(req => {
-            if(req.user.id === id)
+            if(req.user.id === id) {
                 req.position = position
+            }
         })
     }
 
@@ -83,7 +86,6 @@ class MatchingSystem {
             const matches = [];
             
             if(this.driverRequest.length !== 0 && this.passengerRequest.length !== 0) {
-                console.log("dans le premier if ")
                 this.isProcessing = true;
                 // Créer une copie des listes des requetes puis vide les listes pour ne pas que 2 promesses traitent les même requetes
                 const tmpDriver = this.driverRequest;
@@ -97,13 +99,14 @@ class MatchingSystem {
                     tmpPassenger.forEach((val, i) => {
                         const p = tmpPassenger[i]
                         const maxDist = d.maxDist * 1000
-                        console.log(maxDist)
-                        console.log(geolib.getDistance(d.position, p.position))
-                        if(maxDist >= geolib.getDistance(d.position, p.position))
-                            matches.push({
-                                'driver': d,
-                                'passenger': p
-                            })
+                        if(d.position !== undefined && p.position !== undefined){
+                            if(maxDist >= geolib.getDistance(d.position, p.position)){
+                                matches.push({
+                                    'driver': d,
+                                    'passenger': p
+                                })
+                            }
+                        }
                     })
                 })
 
@@ -119,7 +122,6 @@ class MatchingSystem {
 
                 this.isProcessing = false;
             }
-            
             resolve(matches)
         })
     }
