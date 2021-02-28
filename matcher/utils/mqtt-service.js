@@ -85,12 +85,13 @@ class MqttService {
         this.client.publish(passengerId, status);
         this.client.publish(driverId, status);
         if(status === 'accept') {
+            console.log('SENDING TOPICS');
+            console.log('PASSENGER', passengerId)
+            console.log('DRIVER', driverId)
             const topic1 = Date.now();
-            this.client.publish(passengerId, `pub/${topic1}`);
-            this.client.publish(driverId, `sub/${topic1}`);
-            const topic2 = Date.now();
-            this.client.publish(passengerId, `sub/${topic2}`);
-            this.client.publish(driverId, `pub/${topic2}`);
+            const topic2 = topic1 + 1
+            this.client.publish(`${passengerId}`, JSON.stringify({pub: topic1, sub: topic2}));
+            this.client.publish(`${driverId}`, JSON.stringify({pub: topic2, sub: topic1}));
         }
     }
 
