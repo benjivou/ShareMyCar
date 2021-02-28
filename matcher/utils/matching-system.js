@@ -10,6 +10,20 @@ class MatchingSystem {
         this.allMatches = []
     }
 
+    getMatchByUserId(id) {
+        for(const match of this.acceptedMatches) {
+            if(match.driver.user.id === id || id === match.passenger.user.id) {
+                return match
+            }
+        }
+        for(const match of this.refusedMatches) {
+            if(match.driver.user.id === id || id === match.passenger.user.id) {
+                return match
+            }
+        }
+        return null
+    }
+
     addMatch(match) {
         this.allMatches.push(match)
     }
@@ -23,14 +37,14 @@ class MatchingSystem {
     }
 
     findMatchStatus(match) {
-        const status = 'N/A'
+        let status = 'N/A'
         this.acceptedMatches.forEach((m) => {
-            if(m.driver.id === match.driver.id && m.passenger.id === match.passenger.id) {
+            if(m.driver.user.id === match || m.passenger.user.id === match) {
                 status = 'accepted';
             }
         })
         this.refusedMatches.forEach((m) => {
-            if(m.driver.id === match.driver.id && m.passenger.id === match.passenger.id) {
+            if(m.driver.user.id === match || m.passenger.user.id === match) {
                 status = 'refused';
             }
         })
@@ -40,7 +54,8 @@ class MatchingSystem {
 
     acceptMatch(acceptedMatch) {
         let status = null;
-        const matchStatus = this.findMatchStatus(acceptedMatch)
+        const matchStatus = this.findMatchStatus(+acceptedMatch)
+        console.log('MATCH STATUS', matchStatus)
         switch(matchStatus) {
             case 'accepted':
                 status = 'accept'
@@ -51,7 +66,7 @@ class MatchingSystem {
             case 'N/A':
             default:
                 this.allMatches.forEach((m) => {
-                    if(m.driver.id === acceptedMatch && m.passenger.id === acceptedMatch) {                        
+                    if(m.driver.user.id === acceptedMatch || m.passenger.user.id === acceptedMatch) {
                         this.acceptedMatches.push(m)
                     }
                 })
@@ -62,7 +77,7 @@ class MatchingSystem {
 
     refuseMatch(refusedMatch) {
         let status = null;
-        const matchStatus = findMatchStatus(refusedMatch)
+        const matchStatus = this.findMatchStatus(refusedMatch)
         switch(matchStatus) {
             case 'accepted':
             case 'refused':
@@ -78,6 +93,7 @@ class MatchingSystem {
 
     updatePosition(id, position) {
         id = +id
+        console.log('USER ID', id)
         this.driverRequest.forEach(req => {
             if(req.user.id === id) {
                 req.position = position
@@ -131,6 +147,11 @@ class MatchingSystem {
 
                 this.isProcessing = false;
             }
+            matches.forEach(match => {
+                if(!this.allMatches.includes(match)) {
+                    this.allMatches.push(match);
+                }
+            })
             resolve(matches)
         })
     }

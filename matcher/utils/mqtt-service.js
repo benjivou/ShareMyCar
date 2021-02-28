@@ -23,19 +23,16 @@ class MqttService {
                 this._handleMatchWill(data.toString());
             } else {
                 if(topic === this.driverTopic) {
-                   
                     this.matcher.addDriverRequest(JSON.parse(data.toString()))
                 } else if(topic === this.passengerTopic) {
                     this.matcher.addPassengerRequest(JSON.parse(data.toString()))
                 } else if(topic === this.positionTopic) {
-                    
                     const splitData = data.toString().split('/')
                     const userId = splitData[0].trim();
                     const position = JSON.parse(splitData[1].trim());
                     this.matcher.updatePosition(userId, position);
                     
                     this.matcher.runMatching().then(matches => {
-                        //console.log('HERE', matches)
                         matches.forEach(match => {
                             this.notifyMatch(match);
                         })
@@ -71,7 +68,8 @@ class MqttService {
         }
 
         if(status && status !== null) {
-            this.notifyMatchStatus(status, match.driver.user.id, match.passenger.user.id);
+            const m = this.matcher.getMatchByUserId(match)
+            this.notifyMatchStatus(status, m.driver.user.id, m.passenger.user.id);
         }
     }
 
