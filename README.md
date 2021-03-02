@@ -31,6 +31,11 @@ Notre projet est divisé en 3 parties :
 
 La description détaillé de l'architecture est disponible sur drive ([description de l'architecture](https://docs.google.com/document/d/1aptt75FcNgb30m615O3gp2lGy6nLYolsbvnyeDFJg9I/edit?usp=sharing))
 
+## Protocole de test utilisateur
+
+Vous trouverez la description du protocole de test utilisateur utilisé pour testé l'application dans le document suivant : 
+[Protocole de test utilisateur](https://docs.google.com/document/d/1i0rwI_Dj9cSV6YnBqv7rWNk8Q3hNSTtqt_5gqmzn4nA/edit?usp=sharing)
+
 ## Documentation 
 Vous retrouverez toute la documation dans ce dossier : 
 https://drive.google.com/drive/folders/1i3-OPlh671Cuol1BuC9QGARCj2TkAEOE?usp=sharing
