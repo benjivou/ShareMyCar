@@ -9,6 +9,20 @@ Notre application permet donc d'aider les personnes n'ayant pas de voiture à fa
 
 ## Architecture du projet
 
+### Composants du système 
+
+Notre projet est divisé en 3 parties :
+
+* L'application mobile : Elle est développé en Android natif avec Kotlin. C'est grâce à elle que les utilisateurs peuvent interragir avec le système.
+* Le serveur REST : Il est developpé en NodeJS avec la libraire express. Il sert à conserver les données des utilisateurs et aussi les requêtes de trajet faite par les utilisateurs.
+* Le système de matching : Il est également développer avec NodeJS. Il est responsable de trouver les requête qui sont compatible et de vérifier si les deux utilisateurs acceptent leur mise en relation.
+
+([Description détaillé des composants du système côté serveur](https://docs.google.com/document/d/1xlsPp1bcTXnB1CCAtbtuMFrXB9PuXW7gw-bDo9m_Ses/edit?usp=sharing))
+
+<br/> <br/>
+
+### Schèma d'architecture
+ 
 ![Architecture-share-my-car](https://user-images.githubusercontent.com/66921801/109696440-59ac4780-7b8d-11eb-912e-36edc4abbdf9.jpg)
 
 
@@ -17,3 +31,7 @@ La description détaillé de l'architecture est disponible sur drive ([descripti
 ## Documentation 
 Vous retrouverez toute la documation dans ce dossier : 
 https://drive.google.com/drive/folders/1i3-OPlh671Cuol1BuC9QGARCj2TkAEOE?usp=sharing
+
+## Étudiants
+
+Hoareau Grégory et Vouillon Benjamin
