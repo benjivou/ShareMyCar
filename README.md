@@ -1,4 +1,7 @@
 # ShareMyCar
+
+Ce projet est réaliser dans le cadre du cours d'Environnement Logiciel pour l'Informatique Mobile (ELIM).
+
 ## Description du projet
 Cette application a pour but de mettre en relation les autostoppeurs avec les conducteurs disponibles qui font le même trajet. 
 L'idée première de l'application de mettre en relation des personnes qui font des trajets récurrents avec des personnes faisant un trajet similaire.
