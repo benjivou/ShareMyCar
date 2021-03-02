@@ -6,15 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.example.sharemycar.data.displayabledata.DataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.models.User
-import com.example.sharemycar.data.retrofit.RetrofitActor
-import com.example.sharemycar.data.retrofit.service.rest.MatchObject
-import com.example.sharemycar.data.retrofit.service.rest.PositionLatLong
-import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
-import com.example.sharemycar.data.retrofit.service.rest.UserStartProcess
+import com.example.sharemycar.data.retrofit.*
 import com.example.sharemycar.data.util.Singleton
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.gson.Gson
 
 /**
  * Start the first step of the process of searching for infos
@@ -48,6 +45,14 @@ class ResearchViewModel : ViewModel() {
         maxDist: Int?
     ) {
         latLong?.let {
+            val obj = Gson().toJson(
+                MatchObject(
+                    requester,
+                    UserStartProcess(user.id, user.username),
+                    it,
+                    maxDist
+                )
+            )
             val result = Singleton.sessionsService.startProcess(
 
                 MatchObject(

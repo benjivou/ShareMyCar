@@ -1,6 +1,7 @@
 package com.example.sharemycar.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import com.example.sharemycar.R
 import com.example.sharemycar.data.displayabledata.EmptyDataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.displayabledata.SuccessDataPreprared
-import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
+import com.example.sharemycar.data.retrofit.RequesterTypeEnum
 import com.example.sharemycar.databinding.FragmentPassengerHomBinding
 import com.example.sharemycar.ui.viewmodels.ResearchViewModel
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
@@ -24,7 +25,7 @@ import com.google.gson.Gson
 import splitties.toast.toast
 import java.util.*
 
-
+private const val TAG = "PassengerHomFragment"
 class PassengerHomFragment : Fragment() {
 
 
@@ -64,7 +65,7 @@ class PassengerHomFragment : Fragment() {
                 startPassengerBtn.isEnabled = false
 
                 researchViewModel.startSearchProcess(
-                    RequesterTypeEnum.DRIVER,
+                    RequesterTypeEnum.PASSENGER,
                     sessionViewModel.user.value!!,
                     null
                 )
@@ -74,8 +75,16 @@ class PassengerHomFragment : Fragment() {
             researchViewModel.data.observe(viewLifecycleOwner, Observer { apiResponse ->
                 startPassengerBtn.isEnabled = true
                 when (apiResponse) {
-                    is EmptyDataPreprared -> toast("void answer")
-                    is ErrorDataPreprared -> toast(apiResponse.errorMessage)
+                    is EmptyDataPreprared -> Log.e(
+                        TAG,
+                        "onViewCreated:void"
+
+                    )
+                    is ErrorDataPreprared -> Log.e(
+                        TAG,
+                        "onViewCreated: ${apiResponse.errorMessage}"
+
+                    )
                     is SuccessDataPreprared -> {
                         sessionViewModel.requesterTypeEnum = RequesterTypeEnum.PASSENGER
                         toast("We are searching for your partner ")

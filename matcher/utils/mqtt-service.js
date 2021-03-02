@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 
 class MqttService {
     constructor(matchingSystem) {
-        this.mqttBrokerUrl = 'mqtt://localhost:1883'
+        this.mqttBrokerUrl = 'mqtt://broker.emqx.io:1883'
         this.clientId = 'ShareMyCarMacther'
         this.client = mqtt.connect(this.mqttBrokerUrl, {clientId: this.clientId})
         this.driverTopic = 'share-my-car-driver'
@@ -18,8 +18,9 @@ class MqttService {
 
         this.client.on('message', (topic, data) => {
             console.log('Got message')
+            console.log(topic)
             if(topic === this.matchTopic) {
-                this._handleMatchWill(data);
+                this._handleMatchWill(data.toString());
             } else {
                 if(topic === this.driverTopic) {
                     this.matcher.addDriverRequest(JSON.parse(data.toString()))
@@ -32,7 +33,6 @@ class MqttService {
                     this.matcher.updatePosition(userId, position);
                     
                     this.matcher.runMatching().then(matches => {
-                        //console.log('HERE', matches)
                         matches.forEach(match => {
                             this.notifyMatch(match);
                         })
@@ -54,7 +54,7 @@ class MqttService {
                 }
             })
         })
-    }
+    }0
 
     _handleMatchWill(data) {
         const splitData = data.split('/');
@@ -68,20 +68,31 @@ class MqttService {
         }
 
         if(status && status !== null) {
-            this.notifyMatchStatus(status, match.driver.user.id, match.passenger.user.id);
+            const m = this.matcher.getMatchByUserId(match)
+            this.notifyMatchStatus(status, m.driver.user.id, m.passenger.user.id);
         }
     }
 
     notifyMatch(match) {
         const driver = match.driver.user;
         const passenger = match.passenger.user;
-        this.client.publish(passenger.id, JSON.stringify(driver))
-        this.client.publish(driver.id, JSON.stringify(passenger))
+        this.matcher.addMatch(match)
+        this.client.publish(`${passenger.id}`, JSON.stringify(driver));
+        this.client.publish(`${driver.id}`, JSON.stringify(passenger));
     }
 
     notifyMatchStatus(status, driverId, passengerId) {
         this.client.publish(passengerId, status);
         this.client.publish(driverId, status);
+        if(status === 'accept') {
+            console.log('SENDING TOPICS');
+            console.log('PASSENGER', passengerId)
+            console.log('DRIVER', driverId)
+            const topic1 = Date.now();
+            const topic2 = topic1 + 1
+            this.client.publish(`${passengerId}`, JSON.stringify({pub: topic1, sub: topic2}));
+            this.client.publish(`${driverId}`, JSON.stringify({pub: topic2, sub: topic1}));
+        }
     }
 
 }

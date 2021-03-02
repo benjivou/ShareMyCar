@@ -18,20 +18,10 @@ class MapsController(context: Context, googleMap: GoogleMap) {
     private val mContext: Context = context
     private val mGoogleMap: GoogleMap = googleMap
 
-    private val mTimeSquare = LatLng(40.758895, -73.985131)
-
     private var mSpotMarkerList = ArrayList<Marker>()
 
     private var mRouteMarkerList = ArrayList<Marker>()
     private lateinit var mRoutePolyline: Polyline
-
-    fun setCustomMarker() {
-        val blackMarkerIcon: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.ic_spot_marker)
-        val markerOptions: MarkerOptions = MarkerOptions().position(mTimeSquare).title(mContext.getString(R.string.time_square)).snippet(mContext.getString(R.string.i_am_snippet)).icon(blackMarkerIcon)
-        mGoogleMap.addMarker(markerOptions)
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(mTimeSquare))
-    }
-
 
 
 

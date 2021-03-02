@@ -1,6 +1,5 @@
 package com.example.sharemycar.ui.fragment
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.example.sharemycar.R
+import com.example.sharemycar.data.retrofit.RequesterTypeEnum
 import com.example.sharemycar.databinding.MatchFragmentBinding
 import com.example.sharemycar.ui.viewmodels.MatchViewModel
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
@@ -42,17 +41,15 @@ class MatchFragment : Fragment() {
     }
 
     fun receivedNewMatch() {
-        sessionViewModel.isDriver.observe(viewLifecycleOwner, Observer {
-            if(it) {
-                viewModel.driver.observe(viewLifecycleOwner, Observer { user ->
-                    binding.userName.text = user.username
-                })
-            } else {
-                viewModel.passenger.observe(viewLifecycleOwner, Observer { user ->
-                    binding.userName.text = user.username
-                })
-            }
-        })
+     /*   if(sessionViewModel.requesterTypeEnum === RequesterTypeEnum.PASSENGER) {
+            viewModel.driver.observe(viewLifecycleOwner, Observer { user ->
+                binding.userName.text = user.username
+            })
+        } else {
+            viewModel.passenger.observe(viewLifecycleOwner, Observer { user ->
+                binding.userName.text = user.username
+            })
+        }*/
     }
 
 }

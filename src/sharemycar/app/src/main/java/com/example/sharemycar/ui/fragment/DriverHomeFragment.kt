@@ -13,7 +13,7 @@ import com.example.sharemycar.R
 import com.example.sharemycar.data.displayabledata.EmptyDataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.displayabledata.SuccessDataPreprared
-import com.example.sharemycar.data.retrofit.service.rest.RequesterTypeEnum
+import com.example.sharemycar.data.retrofit.RequesterTypeEnum
 import com.example.sharemycar.databinding.FragmentDriverHomeBinding
 import com.example.sharemycar.ui.viewmodels.ResearchViewModel
 import com.example.sharemycar.ui.viewmodels.SessionViewModel
@@ -81,6 +81,7 @@ class DriverHomeFragment : Fragment() {
                     )
                 }
                 else{
+                    startDriverBtn.isEnabled = true
                     toast("veuillez saisir un détour maximum valide")
                 }
 
@@ -88,7 +89,6 @@ class DriverHomeFragment : Fragment() {
             researchViewModel.data.observe(viewLifecycleOwner, Observer { apiResponse ->
                 startDriverBtn.isEnabled = true
                 when (apiResponse) {
-                    is EmptyDataPreprared -> toast("void answer")
                     is ErrorDataPreprared -> toast(apiResponse.errorMessage)
                     is SuccessDataPreprared -> {
                         sessionViewModel.requesterTypeEnum = RequesterTypeEnum.DRIVER

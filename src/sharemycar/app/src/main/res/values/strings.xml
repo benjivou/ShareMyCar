@@ -30,5 +30,15 @@
     <string name="i_am_snippet">I am snippet</string>
     <string name="icM">icm</string>
     <string name="chelsea_market">chelsea</string>
+    <string name="accept">OK</string>
+    <string name="titleErrorMQTT">Un probléme inattendu est apparu</string>
+    <string name="titleMatchReadyDriverAvailable">"un conducteur est disponible ;) "</string>
+    <string name="titleMatchReadyPassengerAvailable">"Un passager t'attends : "</string>
+    <string name="dismiss">non</string>
+    <string name="msgMatchReadyDriver">%s veux être conduit l\'acceptes-tu ?</string>
+    <string name="msgMatchReadyPassenger">%s veut te prendre es-tu disponible?</string>
+    <string name="msgMatchRefused">Dommage il a refusé nous allons vous en trouver un autre</string>
+    <string name="titleMatchResult">Look at the answer from your match:</string>
+    <string name="msgMatchAccepted">He accept</string>
 
 </resources>

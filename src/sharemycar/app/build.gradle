@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.sharemycar"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -81,7 +81,7 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.4.0'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
 
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
     implementation 'com.google.android.gms:play-services-location:17.1.0'
