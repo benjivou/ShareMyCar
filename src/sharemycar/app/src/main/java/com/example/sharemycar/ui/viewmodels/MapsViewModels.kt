@@ -6,13 +6,16 @@ import androidx.lifecycle.*
 import com.example.sharemycar.data.displayabledata.DataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.displayabledata.SuccessDataPreprared
+import com.example.sharemycar.data.models.Bucket1Match
 import com.example.sharemycar.data.models.Directions
 import com.example.sharemycar.data.models.Route
+import com.example.sharemycar.data.mqtt.ErrorMQTTPreprared
 import com.example.sharemycar.data.mqtt.MqttCommunicator
-import com.example.sharemycar.data.retrofit.MatchObject
+import com.example.sharemycar.data.mqtt.SuccessMQTTPreprared
 import com.example.sharemycar.data.untracked.PLACES_KEY
 import com.example.sharemycar.data.util.Singleton
 import com.example.sharemycar.ui.livedata.LocationLiveData
+import com.example.sharemycar.ui.livedata.MQTTLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import convertLatLng
@@ -21,14 +24,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import splitties.toast.toast
 
+
 private const val TAG = "MapsViewModels"
 
-class MapsViewModels(context: Context, dest: LatLng, userId: Long) : ViewModel() {
-    private val mInterval = 5000L // 5 seconds by default, can be changed later
-    private val SERVER_URL: String = "tcp://broker.emqx.io:1883"
-    private lateinit var mqttClient: MqttCommunicator
-    private lateinit var mqttPub: MqttCommunicator
+class MapsViewModels(val context: Context, dest: LatLng, val userId: Long) : ViewModel() {
 
+    private var mqttPub: MqttCommunicator = MqttCommunicator(context, userId)
+    private lateinit var mqttClient: MQTTLiveData
+    private var pubTopic = "positions"
+
+    val isThisTheEnd = MutableLiveData(false)
 
 
     private val _pathToTarget = MediatorLiveData<DataPreprared<Route>?>()
@@ -42,38 +47,37 @@ class MapsViewModels(context: Context, dest: LatLng, userId: Long) : ViewModel()
 
     override fun onCleared() {
         super.onCleared()
-        mqttClient.disconnect()
+
         mqttPub.disconnect()
     }
 
     init {
-        mqttClient = MqttCommunicator(context, userId, userId.toString())
-        mqttPub = MqttCommunicator(context, userId)
+
         // when the user sensor change
         _pathToTarget.addSource(_myLocation, Observer {
             _locationDestData.value?.run {
                 positionDestChange(it, this)
                 if (mqttPub.isConnected) mqttPub.publish(
-                    "positions",
+                    pubTopic,
                     "$userId/{\"latitude\":${it.latitude},\"longitude\":${it.longitude}}"
                 )
             } ?: toast("Pas de destination")
         }
 
         )
-        _pathToTarget.addSource(_locationDestData, Observer {
+        /*_pathToTarget.addSource(_locationDestData, Observer {
             _myLocation.value?.run {
                 positionUserChange(this, it)
-
             }
 
-        })
+        })*/
 
     }
 
     fun positionUserChange(origin: LatLng, dest: LatLng) {
         positionDestChange(origin, dest)
     }
+
 
     fun positionDestChange(origin: LatLng, dest: LatLng) {
         val directionsCall = Singleton.googleService.getDirections(
@@ -113,5 +117,66 @@ class MapsViewModels(context: Context, dest: LatLng, userId: Long) : ViewModel()
             }
         })
     }
+
+    fun changeListener(topic: Bucket1Match) {
+
+        // this.mqttStartFollow = MQTTLiveData(context, topic.idSub, userId.toString())
+
+        pubTopic = topic.idPub
+        mqttClient = MQTTLiveData(context, topic.idSub, userId.toString())
+        _pathToTarget.addSource(mqttClient) {
+            when (it) {
+                is ErrorMQTTPreprared -> {
+                    Log.d(TAG, "changeListener: issue")
+                }
+                is SuccessMQTTPreprared ->
+                    try {
+/*
+                        if (it.content == "end") {
+                            _pathToTarget.removeSource(_locationDestData)
+                            _pathToTarget.removeSource(_myLocation)
+                            _pathToTarget.removeSource(mqttClient)
+                        }*/
+
+                        _myLocation.value?.run {
+                            var msg = it.content.split("/")[1]
+                            var map: Map<String, Double> = HashMap()
+                            map = Gson().fromJson(msg, map.javaClass)
+
+                            // calcul the distance to the point
+                            /*val loc1 = Location(LocationManager.GPS_PROVIDER)
+                            val loc2 = Location(LocationManager.GPS_PROVIDER)*/
+                            /*  loc1.latitude = map["latitude"]!!
+                              loc1.longitude = map["longitude"]!!
+                              loc2.latitude = _myLocation.value!!.latitude
+                              loc2.longitude = _myLocation.value!!.longitude
+                              val distance = loc1.distanceTo(loc2)*/
+                            /* if (distance < 5) {
+                                 _pathToTarget.removeSource(_locationDestData)
+                                 _pathToTarget.removeSource(_myLocation)
+                                 _pathToTarget.removeSource(mqttClient)
+                                 mqttPub.publish(
+                                     pubTopic,
+                                     "end",
+                                     qos = 1,
+                                 )
+                                 isThisTheEnd.value = true*/
+
+                            _locationDestData.value =
+                                LatLng(map["latitude"]!!, map["longitude"]!!)
+
+
+                        }
+                    } catch (e: Exception) {
+                        Log.w(TAG, "changeListener: ${e.stackTrace}", e)
+                    }
+
+
+            }
+        }
+
+
+    }
+
 
 }

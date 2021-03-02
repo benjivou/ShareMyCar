@@ -6,10 +6,11 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
+import java.lang.NullPointerException
 
 var connectionFailure: Int = 0;
 
-class MqttCommunicator(ctx: Context, val userId: Long, val topic: String="", val sub: Boolean = true) {
+class MqttCommunicator(var ctx: Context, val userId: Long, val topic: String="", val sub: Boolean = true) {
     private lateinit var mqttClient: MqttAndroidClient
     private val SERVER_URL: String = "tcp://broker.emqx.io:1883" //"tcp://192.168.1.148:1883"
     private val TAG = "AndroidMqttClient"
@@ -62,7 +63,7 @@ class MqttCommunicator(ctx: Context, val userId: Long, val topic: String="", val
         }
     }
 
-    fun subscribe(topic: String, qos: Int = 1) {
+    fun subscribe(topic: String, qos: Int = 0) {
         Log.d(TAG, "TRYING TO SUBSCRIBE")
         try {
 
@@ -99,6 +100,10 @@ class MqttCommunicator(ctx: Context, val userId: Long, val topic: String="", val
             })
         } catch (e: MqttException) {
             e.printStackTrace()
+        }
+        catch (e:NullPointerException){
+            isConnected = false
+            this.connect(context = ctx)
         }
     }
 
@@ -155,6 +160,7 @@ class MqttCommunicator(ctx: Context, val userId: Long, val topic: String="", val
                 //   saveMatch(matchJSON)
             }
         }
+
     }
 
 

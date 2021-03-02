@@ -1,6 +1,7 @@
 package com.example.sharemycar.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ import com.google.gson.Gson
 import splitties.toast.toast
 import java.util.*
 
-
+private const val TAG = "PassengerHomFragment"
 class PassengerHomFragment : Fragment() {
 
 
@@ -74,8 +75,16 @@ class PassengerHomFragment : Fragment() {
             researchViewModel.data.observe(viewLifecycleOwner, Observer { apiResponse ->
                 startPassengerBtn.isEnabled = true
                 when (apiResponse) {
-                    is EmptyDataPreprared -> toast("void answer")
-                    is ErrorDataPreprared -> toast(apiResponse.errorMessage)
+                    is EmptyDataPreprared -> Log.e(
+                        TAG,
+                        "onViewCreated:void"
+
+                    )
+                    is ErrorDataPreprared -> Log.e(
+                        TAG,
+                        "onViewCreated: ${apiResponse.errorMessage}"
+
+                    )
                     is SuccessDataPreprared -> {
                         sessionViewModel.requesterTypeEnum = RequesterTypeEnum.PASSENGER
                         toast("We are searching for your partner ")

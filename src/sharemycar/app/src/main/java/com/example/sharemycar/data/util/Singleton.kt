@@ -26,4 +26,6 @@ object Singleton {
         .client(OkHttpClient().newBuilder().build())
         .addConverterFactory(GsonConverterFactory.create())
         .build().create(GoogleMethods::class.java)
+
+
 }

@@ -12,22 +12,17 @@ import com.google.gson.Gson
 
 class MatchViewModel(ctx: Context, val user: User) : ViewModel() {
 
-    val driver: MutableLiveData<User> = MutableLiveData(null)
-    val passenger: MutableLiveData<User> = MutableLiveData(null)
-    private lateinit var mqttPub: MqttCommunicator
 
-    init {
-        mqttPub = MqttCommunicator(ctx, user.id)
-    }
+    private var mqttPub: MqttCommunicator = MqttCommunicator(ctx, user.id)
 
-    val mqttIdTopicLiveData = MQTTLiveData(ctx, "matches", user.id.toString())
-    fun sendAnswer(isAccepted: Boolean, matchObject: BucketMatch) {
+    val mqttIdTopicLiveData = MQTTLiveData(ctx,  user.id.toString(), user.id.toString())
+    fun sendAnswer(isAccepted: Boolean, idUser:Long) {
         val type: String =
-            if (isAccepted) "accept"
+            if (isAccepted) "accept/"
             else {
-                "refuse"
-            } + "/"
+                "refuse/"
+            }
 
-        mqttPub.publish("matches", "$type${Gson().toJson(matchObject)}")
+        mqttPub.publish("matches", "$type${idUser}")
     }
 }

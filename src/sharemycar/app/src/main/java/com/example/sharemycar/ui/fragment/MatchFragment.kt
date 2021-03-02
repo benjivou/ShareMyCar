@@ -41,7 +41,7 @@ class MatchFragment : Fragment() {
     }
 
     fun receivedNewMatch() {
-        if(sessionViewModel.requesterTypeEnum === RequesterTypeEnum.PASSENGER) {
+     /*   if(sessionViewModel.requesterTypeEnum === RequesterTypeEnum.PASSENGER) {
             viewModel.driver.observe(viewLifecycleOwner, Observer { user ->
                 binding.userName.text = user.username
             })
@@ -49,7 +49,7 @@ class MatchFragment : Fragment() {
             viewModel.passenger.observe(viewLifecycleOwner, Observer { user ->
                 binding.userName.text = user.username
             })
-        }
+        }*/
     }
 
 }

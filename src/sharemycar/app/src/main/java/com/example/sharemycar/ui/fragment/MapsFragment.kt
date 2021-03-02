@@ -8,14 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navOptions
 import com.example.sharemycar.R
 import com.example.sharemycar.data.displayabledata.EmptyDataPreprared
 import com.example.sharemycar.data.displayabledata.ErrorDataPreprared
 import com.example.sharemycar.data.displayabledata.SuccessDataPreprared
+import com.example.sharemycar.data.models.Bucket1Match
 import com.example.sharemycar.data.models.BucketMatch
 import com.example.sharemycar.data.mqtt.ErrorMQTTPreprared
 import com.example.sharemycar.data.mqtt.SuccessMQTTPreprared
+import com.example.sharemycar.data.retrofit.RequesterTypeEnum
 import com.example.sharemycar.data.util.MapsController
 import com.example.sharemycar.ui.viewmodels.MapsViewModels
 import com.example.sharemycar.ui.viewmodels.MatchViewModel
@@ -26,8 +30,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_maps.*
 import splitties.toast.toast
-import java.lang.Exception
 
 private const val TAG = "MapsFragment"
 
@@ -41,6 +45,7 @@ class MapsFragment : Fragment() {
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var mMapsController: MapsController
 
+    private var currentMatch: BucketMatch? = null
     private val callback = OnMapReadyCallback { googleMap ->
         mGoogleMap = googleMap
 
@@ -57,6 +62,7 @@ class MapsFragment : Fragment() {
             }
         })
     }
+
 
 
     override fun onCreateView(
@@ -80,65 +86,120 @@ class MapsFragment : Fragment() {
             requireContext(),
             userViewModel.user.value!!,
         )
+        mapsViewModels.isThisTheEnd.observe(viewLifecycleOwner,{
+            if(it){
+                val directions = MapsFragmentDirections.actionMapsFragmentToThanksFragment()
+                findNavController().navigate(directions)
+            }
+        })
+        floatingActionButton2.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Avez vous rejoind votre ${if(userViewModel.requesterTypeEnum == RequesterTypeEnum.PASSENGER) "chauffeur" else "passager"}?")
+                .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
 
+                    dialog.dismiss()
+                    findNavController().popBackStack()
+                    toast("Merci d'avoir utilisé notre application ")
+                }
+                .setNegativeButton(resources.getString(R.string.dismiss)) { dialog, which ->
+                    findNavController().popBackStack()
+                    toast("Dommage une autre fois peut-être")
+                }
+                .show()
+        }
         // POP de like
-        matchViewModels.mqttIdTopicLiveData.observe(viewLifecycleOwner, Observer {
+        matchViewModels.mqttIdTopicLiveData.observe(viewLifecycleOwner, Observer { bucketMQTT ->
             try {
-                when (it) {
+                when (bucketMQTT) {
                     is ErrorMQTTPreprared -> MaterialAlertDialogBuilder(requireContext())
                         .setTitle(resources.getString(R.string.titleErrorMQTT))
-                        .setMessage(it.errorMessage)
+                        .setMessage(bucketMQTT.errorMessage)
                         .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
                             dialog.dismiss()
                         }
                         .show()
                     is SuccessMQTTPreprared -> {
-                        val bucketMatch= Gson().fromJson(it.content, BucketMatch::class.java)
-                        bucketMatch.driver?.run {
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(resources.getString(R.string.titleMatchReady))
-                                .setMessage(this.username + " veut te prendre es tu prêts? ")
-                                .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-                                    matchViewModels.sendAnswer(true,bucketMatch )
-                                    dialog.dismiss()
-                                }
-                                .setNegativeButton(resources.getString(R.string.dismiss)) { dialog, which ->
-                                    matchViewModels.sendAnswer(true,bucketMatch )
-                                    Log.d(TAG, "onViewCreated: Passenger accepted")
-                                    dialog.dismiss()
-                                }
-                                .show()
-                        } ?: kotlin.run {
-                            Log.i(TAG, "onViewCreated: no Driver") }
-                        bucketMatch.passenger?.run {
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(resources.getString(R.string.titleMatchReadyPassengerAvailable))
-                                .setMessage(this.username + " veut te prendre es tu prêts? ")
-                                .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-                                    matchViewModels.sendAnswer(true,bucketMatch )
-                                    Log.d(TAG, "onViewCreated: Passenger accepted")
-                                    dialog.dismiss()
-                                }
-                                .setNegativeButton(resources.getString(R.string.dismiss)) { dialog, which ->
-                                    matchViewModels.sendAnswer(true,bucketMatch )
-                                    Log.d(TAG, "onViewCreated: Passenger accepted")
-                                    dialog.dismiss()
-                                }
-                                .show()
+                        var map: Map<String, String> = HashMap()
+                        map = Gson().fromJson(bucketMQTT.content, map.javaClass)
+                        // Check if it's a match or not
+                        if (map.filterKeys { it == "name" }.isNotEmpty()) {
+                            val bucketMatch =
+                                Gson().fromJson(bucketMQTT.content, BucketMatch::class.java)
+                            bucketMatch.run {
+                                if (userViewModel.requesterTypeEnum == RequesterTypeEnum.PASSENGER)
+                                    displayMatchPopup(this, userViewModel.requesterTypeEnum!!)
+                                else
+                                    displayMatchPopup(this, userViewModel.requesterTypeEnum!!)
+                            }
+                        } else if (bucketMQTT.content == "accept" || bucketMQTT.content == "refuse") {
+                            displayMatchPopupResult(bucketMQTT.content == "accept")
+
+                            Log.d(TAG, "onViewCreated: $bucketMQTT")
                         }
+                        // this is the new topic
+                        else if (map.filterKeys { it == "pub" }.isNotEmpty()){
 
+                            mapsViewModels.changeListener(
+                                Gson().fromJson(bucketMQTT.content, Bucket1Match::class.java)
+                            )
 
+                        }
                     }
                 }
-            }
-            catch(e:Exception){
-                kotlin.io.print(e)
+            } catch (e: Exception) {
+                Log.e(TAG, "onViewCreated: $e", e)
             }
         })
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
 
         mapFragment?.getMapAsync(callback)
 
+    }
+
+    fun displayMatchPopupResult(isAccepted: Boolean) {
+        var msg: String =
+            if (isAccepted) {
+                resources.getString(R.string.msgMatchAccepted)
+            } else {
+
+                resources.getString(R.string.msgMatchRefused)
+            }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.titleMatchResult))
+            .setMessage(msg)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+
+                dialog.dismiss()
+            }
+
+            .show()
+    }
+
+    fun displayMatchPopup(bucketMatch: BucketMatch, requesterTypeEnum: RequesterTypeEnum) {
+        var title: String
+        var msg: String
+        if (requesterTypeEnum == RequesterTypeEnum.DRIVER) {
+            title = resources.getString(R.string.titleMatchReadyPassengerAvailable)
+            msg = resources.getString(R.string.msgMatchReadyDriver, bucketMatch.name)
+        } else {
+            title = resources.getString(R.string.titleMatchReadyDriverAvailable)
+            msg = resources.getString(R.string.msgMatchReadyPassenger, bucketMatch.name)
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(msg)
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                matchViewModels.sendAnswer(true, bucketMatch.id)
+                dialog.dismiss()
+            }
+            .setNegativeButton(resources.getString(R.string.dismiss)) { dialog, which ->
+                matchViewModels.sendAnswer(false, bucketMatch.id)
+                Log.d(TAG, "onViewCreated: Passenger accepted")
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onDestroy() {

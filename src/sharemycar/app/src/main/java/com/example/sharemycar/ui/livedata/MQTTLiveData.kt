@@ -7,7 +7,6 @@ import com.example.sharemycar.data.mqtt.BucketMQTT
 import com.example.sharemycar.data.mqtt.ErrorMQTTPreprared
 import com.example.sharemycar.data.mqtt.SuccessMQTTPreprared
 import com.example.sharemycar.data.mqtt.connectionFailure
-import com.google.gson.GsonBuilder
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 
@@ -19,16 +18,18 @@ class MQTTLiveData(val ctx: Context, val topic: String, val userId: String) :
 
     private val SERVER_URL: String = "tcp://broker.emqx.io:1883"
     private lateinit var mqttClient: MqttAndroidClient
-
+private var currentTopic:String?=null
 
     override fun onInactive() {
         super.onInactive()
-        disconnect()
+       // disconnect()
     }
 
     fun disconnect() {
+
         unsubscribeToAll()
         try {
+
             mqttClient.disconnect(null, object : IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.d(TAG, "Disconnected")
@@ -45,15 +46,17 @@ class MQTTLiveData(val ctx: Context, val topic: String, val userId: String) :
 
     private fun unsubscribeToAll() {
 
-        mqttClient.unsubscribe(topic.toString(), null, object : IMqttActionListener {
-            override fun onSuccess(asyncActionToken: IMqttToken?) {
-                Log.d(TAG, "Unsubscribed to $topic")
-            }
+       currentTopic?.run {
+           mqttClient.unsubscribe(topic, null, object : IMqttActionListener {
+               override fun onSuccess(asyncActionToken: IMqttToken?) {
+                   Log.d(TAG, "Unsubscribed to $topic")
+               }
 
-            override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-                Log.d(TAG, "Failed to unsubscribe $topic")
-            }
-        })
+               override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                   Log.d(TAG, "Failed to unsubscribe $topic")
+               }
+           })
+       }
 
     }
 
@@ -70,13 +73,14 @@ class MQTTLiveData(val ctx: Context, val topic: String, val userId: String) :
 
     }
 
-    fun subscribe(topic: String, qos: Int = 1) {
+    fun subscribe(topic: String, qos: Int = 0) {
         Log.d(TAG, "TRYING TO SUBSCRIBE")
 
         try {
-            mqttClient.subscribe(topic.toString(), qos, null, object : IMqttActionListener {
+            mqttClient.subscribe(topic, qos, null, object : IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.d(TAG, "Subscribed to $topic")
+                    currentTopic = topic
                 }
 
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
@@ -94,30 +98,22 @@ class MQTTLiveData(val ctx: Context, val topic: String, val userId: String) :
             override fun connectionLost(cause: Throwable?) {
                 Log.d(TAG, "Connection lost ${cause.toString()}")
                 value = cause?.message?.let { ErrorMQTTPreprared(it) }
-                    ?: ErrorMQTTPreprared("connection Lost")
+
             }
 
             override fun messageArrived(topic: String?, message: MqttMessage?) {
                 Log.d(TAG, "Receive message: ${message.toString()} from topic: $topic")
                 if (topic == topic) {
-                    if (message.toString().trim() == "accept") {
-                        // The match is accepted
-                        Log.d(TAG, "THE MATCH IS ACCEPTED")
-                    } else if (message.toString().trim() == "refuse") {
-                        // The match is refuse
-                        Log.d(TAG, "THE MATCH IS REFUSED")
-                    } else {
-                        val gson = GsonBuilder()
+                    val buf: String = message.toString()
 
-                        val buf: String = message.toString()
+                    value = SuccessMQTTPreprared(
+                        buf
+                    )
+                    Log.d(TAG, "Message received")
 
-                        value = SuccessMQTTPreprared(
-                            buf
-                        )
-                        Log.d(TAG, "Message received")
-                    }
                 }
             }
+
 
             override fun deliveryComplete(token: IMqttDeliveryToken?) {
                 TODO("Not yet implemented")
