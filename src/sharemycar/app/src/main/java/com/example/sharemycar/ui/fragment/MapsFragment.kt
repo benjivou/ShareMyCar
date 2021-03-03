@@ -94,7 +94,7 @@ class MapsFragment : Fragment() {
         })
         floatingActionButton2.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Avez vous rejoind votre ${if(userViewModel.requesterTypeEnum == RequesterTypeEnum.PASSENGER) "chauffeur" else "passager"}?")
+                .setTitle("Avez-vous rejoint votre ${if(userViewModel.requesterTypeEnum == RequesterTypeEnum.PASSENGER) "chauffeur" else "passager"}?")
                 .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
 
                     dialog.dismiss()

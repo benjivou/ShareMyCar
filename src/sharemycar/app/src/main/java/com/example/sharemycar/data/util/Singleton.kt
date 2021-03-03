@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
- const val URL_API = "http://192.168.1.70:8080/api/"
+ const val URL_API = "http://192.168.43.196:8080/api/"
 //const val URL_API = "http://192.168.43.137:8080/api/"
 
 object Singleton {

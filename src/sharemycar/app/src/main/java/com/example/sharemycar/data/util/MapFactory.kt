@@ -3,10 +3,7 @@
 package com.example.sharemycar.data.util
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.PixelFormat
+import android.graphics.*
 import android.os.Build
 import com.example.sharemycar.R
 import com.google.android.gms.maps.CameraUpdate
@@ -39,7 +36,7 @@ object MapsFactory {
         }
     }
 
-    fun drawMarker(context: Context, text: String): Bitmap {
+    fun drawMarker(context: Context, text: String,color: Int = Color.BLACK): Bitmap {
         val drawable = context.resources.getDrawable(R.drawable.ic_spot_marker, context.theme)
         val bitmap = Bitmap.createBitmap(
             drawable.intrinsicWidth,
@@ -50,6 +47,7 @@ object MapsFactory {
         drawable.draw(canvas)
         val paint = Paint()
         paint.textSize = 50 * context.resources.displayMetrics.density / 2
+    //    paint.color = color
         paint.style = Paint.Style.FILL
         val textCanvas = Canvas(bitmap)
         textCanvas.drawText(text, ((bitmap.width * 7) / 20).toFloat(), (bitmap.height / 2).toFloat(), paint)

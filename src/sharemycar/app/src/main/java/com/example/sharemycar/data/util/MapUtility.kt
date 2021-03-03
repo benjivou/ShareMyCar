@@ -1,6 +1,7 @@
 package com.example.sharemycar.data.util
 
 import android.content.Context
+import android.graphics.Color
 import com.example.sharemycar.R
 import com.example.sharemycar.data.models.Route
 
@@ -34,9 +35,9 @@ class MapsController(context: Context, googleMap: GoogleMap) {
 
     fun setMarkersAndRoute(route: Route) {
         val startLatLng = LatLng(route.startLat!!, route.startLng!!)
-        val startMarkerOptions: MarkerOptions = MarkerOptions().position(startLatLng).title(route.startName).icon(BitmapDescriptorFactory.fromBitmap(MapsFactory.drawMarker(mContext, "S")))
+        val startMarkerOptions: MarkerOptions = MarkerOptions().position(startLatLng).title(route.startName).icon(BitmapDescriptorFactory.fromBitmap(MapsFactory.drawMarker(mContext, "Moi",color = Color.BLUE)))
         val endLatLng = LatLng(route.endLat!!, route.endLng!!)
-        val endMarkerOptions: MarkerOptions = MarkerOptions().position(endLatLng).title(route.endName).icon(BitmapDescriptorFactory.fromBitmap(MapsFactory.drawMarker(mContext, "E")))
+        val endMarkerOptions: MarkerOptions = MarkerOptions().position(endLatLng).title(route.endName).icon(BitmapDescriptorFactory.fromBitmap(MapsFactory.drawMarker(mContext, "Lui",Color.RED)))
         val startMarker = mGoogleMap.addMarker(startMarkerOptions)
         val endMarker = mGoogleMap.addMarker(endMarkerOptions)
         mRouteMarkerList.add(startMarker)

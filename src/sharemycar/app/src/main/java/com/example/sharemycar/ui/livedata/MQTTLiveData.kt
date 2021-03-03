@@ -98,7 +98,7 @@ private var currentTopic:String?=null
             override fun connectionLost(cause: Throwable?) {
                 Log.d(TAG, "Connection lost ${cause.toString()}")
                 value = cause?.message?.let { ErrorMQTTPreprared(it) }
-
+                //mqttClient.connect()
             }
 
             override fun messageArrived(topic: String?, message: MqttMessage?) {
